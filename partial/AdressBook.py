@@ -1,7 +1,7 @@
 from collections import UserDict
 from typing import Optional, List
 from datetime import date
-
+import re
 
 class Field:
     """Fields of records in contact book : name , phone/phones , etc."""
@@ -49,6 +49,17 @@ class Birthday(Field):
             self.value = None
         except TypeError:
             self.value = None
+
+
+class Email(Field):
+
+    def __init__(self, value):
+        if value is not None:
+            if re.match(r'^.+@(\w+\.){0,2}[a-z]{2,6}$', value, re.IGNORECASE) is not None:
+                super().__init__(value)
+            else:
+                print(f'Invalid email "{value}", by default we set email to None!')
+                self.__value = None
 
 
 class Record:
