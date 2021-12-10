@@ -62,6 +62,7 @@ class Email(Field):
                 self.__value = None
 
 
+
 class Record:
     """Records(contacts) in users contact book.
     Only one name , but it can be more than one phone"""
