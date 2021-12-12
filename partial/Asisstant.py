@@ -1,13 +1,13 @@
 import os
 import pickle
 
-from partial.AdressBook import AdressBook
-from partial.NoteBook import NoteBook
+from AdressBook import AddressBook
+from NoteBook import NoteBook
 
 
 class Asisstant:
     def __init__(self) -> None:
-        self.adress_book = AdressBook()
+        self.address_book = AddressBook()
         self.note_book = NoteBook()
 
     def load_data(self) -> None:
@@ -16,7 +16,7 @@ class Asisstant:
         """
         if os.path.exists('data-adress.bin'):
             with open('data-adress.bin', 'rb') as file:
-                self.adress_book = pickle.load(file)
+                self.address_book = pickle.load(file)
         if os.path.exists('data-note.bin'):
             with open('data-note.bin', 'rb') as file:
                 self.note_book = pickle.load(file)
@@ -26,6 +26,6 @@ class Asisstant:
             Save data to file
         """
         with open('data-adress.bin', 'wb') as file:
-            pickle.dump(self.adress_book, file)
+            pickle.dump(self.address_book, file)
         with open('data-note.bin', 'wb') as file:
             pickle.dump(self.note_book, file)

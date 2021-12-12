@@ -1,3 +1,5 @@
+import os
+import pickle
 from collections import UserDict
 from typing import Optional, List
 from datetime import date
@@ -26,9 +28,11 @@ class Phone(Field):
     """Phone of the contact"""
 
     def __init__(self, value):
-        value = value.replace('+', '').replace(' ', '')
-        if value.isdigit():
+        if len(value) == 13 and value[0] == '+' and value[1:].isdigit():
             super().__init__(value)
+        else:
+            print(f'Invalid format for phone: {value}, please enter all phones in format +380123456789')
+            self.value = []
 
     def __eq__(self, other: object) -> bool:
         return self.value == other.value
@@ -58,8 +62,22 @@ class Email(Field):
             if re.match(r'^.+@(\w+\.){0,2}[a-z]{2,6}$', value, re.IGNORECASE) is not None:
                 super().__init__(value)
             else:
-                print(f'Invalid email "{value}", by default we set email to None!')
-                self.__value = None
+                print(f'Invalid email "{value}"!')
+                self.value = None
+        else:
+            self.value = None
+
+
+class Address(Field):
+    def __init__(self, value):
+        if value is not None:
+            if value is not None and len(value) > 5:
+                super().__init__(value)
+            else:
+                print(f'Invalid address "{value}" must be more than 5 letters')
+                self.value = None
+        else:
+            self.value = None
 
 
 
@@ -67,13 +85,15 @@ class Record:
     """Records(contacts) in users contact book.
     Only one name , but it can be more than one phone"""
 
-    def __init__(self, name: str, phones: List[str] = None, birthday: Optional[str] = None) -> None:
+    def __init__(self, name: str, phones: List[str] = None, birthday: Optional[str] = None, email: Optional[str] = None, address: Optional[str] = None) -> None:
         if phones:
             self.phones = [Phone(p) for p in phones]
         else:
             self.phones = []
         self.birthday = Birthday(birthday)
         self.name = Name(name)
+        self.email = Email(email)
+        self.address = Address(address)
 
     def add_phone(self, phone_number: str) -> None:
         phone = Phone(phone_number)
@@ -111,6 +131,12 @@ class Record:
         """
         self.birthday = Birthday(birthday_date)
 
+    def add_email(self, email):
+        self.email = Email(email)
+
+    def add_address(self, address):
+        self.address = Address(address)
+
     def days_to_birthday(self):
         """
             If b-day is added: counts days before next one.
@@ -137,18 +163,31 @@ class Record:
         return self
 
 
-class AdressBook(UserDict):
+class AddressBook(UserDict):
     """All contacts data"""
 
-    def add_record(self, record: list) -> None:
-        new_record = Record(name=record[0], phones=record[1:])
-        self.data[new_record.name.value] = new_record
+    def add_record(self, record: Record) -> None:
+        self.data[record.name.value] = record
 
-    def find_record(self, value: str) -> Optional[Record]:
-        return self.data.get(value)
+    def find_record(self, value: str) -> str:
+        if value in self.data.keys():
+            return f'{self.data[value].name.value}: phones: {self.data[value].get_phones()}, birthday: {self.data[value].birthday.value}, Email: {self.data[value].email.value}, Address: {self.data[value].address.value}'
+        else:
+            return f'I do not have such contact: {value}'
 
     def delete_record(self, value: str) -> None:
         self.data.pop(value)
+
+    def save_data(self, name_file):
+        with open(name_file, "wb") as file:
+            pickle.dump(self.data, file)
+            print(f'Successfully saved in {name_file}')
+
+    def load_data(self, name_file):
+        if os.path.isfile(name_file) and os.path.getsize(name_file) > 0:
+            with open(name_file, 'rb') as file:
+                self.data = pickle.load(file)
+                print(f'Data was loaded from file {name_file}')
 
     def __str__(self):
         return str(self.data)
