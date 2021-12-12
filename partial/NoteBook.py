@@ -1,4 +1,5 @@
 from collections import UserDict, UserList
+from typing import Generator, Optional
 
 
 class Tag:
@@ -15,17 +16,17 @@ class Tag:
 
 
 class Note():
-    def __init__(self, text: str, *tags: list[str], id:int) -> None:
+    def __init__(self, text: str, id:int, tags: list[str]) -> None:
         self.text = text
-        self.tags = []
         self.id = id
-        for tag in tags:
-            self.tags.append(Tag(tag))
+        self.tags = [Tag(tag) for tag in tags]
     
     def __str__(self) -> str:
-        tags = [tag.value for tag in self.tags]
-        tags =', '.join(tags)
-        return f'ID:{self.id} Note:{self.text}\nTags:{tags}'
+        tags = []
+        for tag in self.tags:
+            tags.append(str(tag.value))
+        note_tags =', '.join(tags)
+        return f'ID:{self.id} Note: {self.text}\nTags: {note_tags}'
 
 class NoteBook(UserList):
     """
@@ -36,8 +37,8 @@ class NoteBook(UserList):
 
     def add_note(self, text:str, *tags:str) -> None:
         '''Method for adding note to list'''
-        id = self.set_ID() 
-        new_note = Note(text, tags, id)
+        id = self.set_ID()
+        new_note = Note(text, id, tags)
         self.data.append(new_note)
         print('New note was added')
 
@@ -82,15 +83,15 @@ class NoteBook(UserList):
             raise ValueError('Input a number')
         for note in self.data:
             if id == note.id:
-                note.tags.extend(tags)
+                note.tags.extend([Tag(tag) for tag in tags])
                 print('Tags was added')
 
     def find_by_tag(self, tag:str) -> None:
         '''Method to find notes by tag'''
-        note_list = []
+        notes_list = []
         for note in self.data:
             note_tags = [tag.value for tag in note.tags]
             if tag in note_tags:
-                note_list.append(note)
+                notes_list.append(note)
         for note in notes_list:
             print(str(note))
