@@ -3,7 +3,6 @@ from partial import NoteBook
 from partial.Sorter import *
 
 
-
 def sort_folder(command: str) -> str:
     path = input("Write path which you want to sort: ")
     sort = Sorter()
@@ -27,9 +26,6 @@ def main():
         "set_birthday",
         "find",
         "del_phone",
-        "good_bye",
-        "close",
-        "exit",
     )
     print('Hello my name is "Jarvis" i am your virtual assistant.')
     print(f"I am support these commands: {commands_list}")
@@ -49,4 +45,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    pass
