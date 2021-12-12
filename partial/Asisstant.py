@@ -1,19 +1,21 @@
 import os
 import pickle
 
-from AdressBook import *
+from partial.AdressBook import *
 
 
 class Asisstant:
     def __init__(self) -> None:
         self.address_book = AddressBook()
-        self.address_book.load_data('data.bin')
+        self.address_book.load_data("data.bin")
 
     def add_contact(self) -> str:
         name = input("Name is key value, please write name: ")
         while len(name) == 0:
             name = input("Name is key value, please write name: ")
-        new_contact = Record(name=name, phones=[], birthday=None, email=None, address=None)
+        new_contact = Record(
+            name=name, phones=[], birthday=None, email=None, address=None
+        )
         self.address_book.add_record(new_contact)
         phone = input("Phone is key value, please write phones: ")
         phones_list = phone.split(",") if phone is not None else []
@@ -39,7 +41,9 @@ class Asisstant:
                     birthday = input(
                         '"OPTIONAL" You can skip this info, just press enter\nWrite birthday: '
                     )
-        email = input('"OPTIONAL" You can skip this info, just press enter\nWrite email: ')
+        email = input(
+            '"OPTIONAL" You can skip this info, just press enter\nWrite email: '
+        )
         if len(email) == 0:
             self.address_book[name].email.value = None
         else:
@@ -91,10 +95,21 @@ class Asisstant:
             self.address_book.save_data("data.bin")
             return f"Successfully changed {what_change} for contact {name}"
         elif what_change == "name":
+
             new_name = input("Write new name: ")
-            self.address_book[name].name.value = new_name
+            old_record = self.address_book.data[name]
+            new_record = Record(
+                name=new_name,
+                phones=old_record.get_phones(),
+                birthday=old_record.birthday.value,
+                email=old_record.email.value,
+                address=old_record.address.value,
+            )
+            self.address_book.add_record(new_record)
+            self.address_book.delete_record(name)
             self.address_book.save_data("data.bin")
             return f"Successfully changed {what_change} for contact {name}"
+
         elif what_change == "birthday":
             new_birthday = input("Write new birthday: ")
             while str(self.address_book[name].birthday.value) != new_birthday:

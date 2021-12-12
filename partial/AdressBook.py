@@ -132,7 +132,12 @@ class Record:
                 return p
 
     def __str__(self):
-        return f"Record of {self.name.value}, phones {[p.value for p in self.phones]}"
+        return f"""\nName: {self.name.value}
+Phones: {[p.value for p in self.phones]}
+Adress: {self.address.value}
+Birthday: {self.birthday.value}
+Email: {self.email.value}
+                   """
 
     def __repr__(self):
         return f"Record of {self.name.value}, phones {[p.value for p in self.phones]}"
@@ -194,13 +199,11 @@ class AddressBook(UserDict):
     def save_data(self, name_file):
         with open(name_file, "wb") as file:
             pickle.dump(self.data, file)
-            print(f"Successfully saved in {name_file}")
 
     def load_data(self, name_file):
         if os.path.isfile(name_file) and os.path.getsize(name_file) > 0:
             with open(name_file, "rb") as file:
                 self.data = pickle.load(file)
-                print(f"Data was loaded from file {name_file}")
 
     def __str__(self):
         return str(self.data)
