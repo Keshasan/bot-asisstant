@@ -1,6 +1,6 @@
 from collections import UserDict
 from typing import Optional, List
-from datetime import date
+from datetime import date, timedelta
 import re
 
 class Field:
@@ -111,7 +111,7 @@ class Record:
         """
         self.birthday = Birthday(birthday_date)
 
-    def days_to_birthday(self):
+    def days_to_birthday(self) -> int:
         """
             If b-day is added: counts days before next one.
 
@@ -128,9 +128,7 @@ class Record:
         if birthday_date <= date_now:
             birthday_date = birthday_date.replace(year=date_now.year + 1)
 
-        days_delta = (birthday_date - date_now).days
-        print(f"{days_delta} days before {self.name.value}'s Birthday.")
-        print(f"Birthday date is: {self.birthday.value.strftime('%d %b %Y')}")
+        days_delta = timedelta(birthday_date - date_now).days
         return days_delta
 
     def __next__(self):
@@ -184,3 +182,16 @@ class AdressBook(UserDict):
                 if subtext in phone_number.value:
                     result_records.append(record)
         return result_records
+    
+    def birthday_in_days(self, step: int = 7) -> list[str]:
+        try:
+            step = int(step)
+        except ValueError:
+            raise ValueError('Input a number')
+        result = []
+        for record in self.data.values:
+            if record.birthday and record.birthday.value:
+                if record.days_to_birthday() <= step:
+                    birthday = f'{record.name.value} {record.birthday.value.strftime("%d-%m-%Y")}'
+                    result.append(birthday)
+        return result
