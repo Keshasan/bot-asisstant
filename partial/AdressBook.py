@@ -1,7 +1,10 @@
+import os
+import pickle
 from collections import UserDict
 from typing import Optional, List
 from datetime import date
 import re
+
 
 class Field:
     """Fields of records in contact book : name , phone/phones , etc."""
@@ -22,11 +25,15 @@ class Name(Field):
     """Name class field of class Record"""
 
 
+class Adress(Field):
+    """Name class field of class Record"""
+
+
 class Phone(Field):
     """Phone of the contact"""
 
     def __init__(self, value):
-        value = value.replace('+', '').replace(' ', '')
+        value = value.replace("+", "").replace(" ", "")
         if value.isdigit():
             super().__init__(value)
 
@@ -45,35 +52,45 @@ class Birthday(Field):
             value = date.fromisoformat(value)
             super().__init__(value)
         except ValueError:
-            print('Incorrect format date was given.')
+            print("Incorrect format date was given.")
             self.value = None
         except TypeError:
             self.value = None
 
 
 class Email(Field):
-
     def __init__(self, value):
         if value is not None:
-            if re.match(r'^.+@(\w+\.){0,2}[a-z]{2,6}$', value, re.IGNORECASE) is not None:
+            if (
+                re.match(r"^.+@(\w+\.){0,2}[a-z]{2,6}$", value, re.IGNORECASE)
+                is not None
+            ):
                 super().__init__(value)
             else:
                 print(f'Invalid email "{value}", by default we set email to None!')
                 self.__value = None
 
 
-
 class Record:
     """Records(contacts) in users contact book.
     Only one name , but it can be more than one phone"""
 
-    def __init__(self, name: str, phones: List[str] = None, birthday: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        name: str,
+        phones: List[str] = None,
+        birthday: Optional[str] = None,
+        adress: Optional[str] = None,
+        email: Optional[str] = None,
+    ) -> None:
         if phones:
             self.phones = [Phone(p) for p in phones]
         else:
             self.phones = []
         self.birthday = Birthday(birthday)
         self.name = Name(name)
+        self.email = Email(email)
+        self.adress = Adress(adress)
 
     def add_phone(self, phone_number: str) -> None:
         phone = Phone(phone_number)
@@ -107,18 +124,18 @@ class Record:
 
     def add_birthday(self, birthday_date):
         """
-            Add 'Birthday' object
+        Add 'Birthday' object
         """
         self.birthday = Birthday(birthday_date)
 
     def days_to_birthday(self):
         """
-            If b-day is added: counts days before next one.
+        If b-day is added: counts days before next one.
 
         """
 
         if self.birthday.value is None:
-            print(f'No b-day added for {self.name.value}')
+            print(f"No b-day added for {self.name.value}")
             return
 
         date_now = date.today()
@@ -140,7 +157,7 @@ class Record:
 class AdressBook(UserDict):
     """All contacts data"""
 
-    def add_record(self, record: list) -> None:
+    def add_record(self, record: Record) -> None:
         new_record = Record(name=record[0], phones=record[1:])
         self.data[new_record.name.value] = new_record
 
@@ -165,15 +182,15 @@ class AdressBook(UserDict):
 
     def page_iterator(self, number_records: int = 3):
         """
-            Generator  n-sized
+        Generator  n-sized
         """
         records = [record for record in self]
         for i in range(0, len(records), number_records):
-            yield records[i:i + number_records]
+            yield records[i : i + number_records]
 
     def search_subtext(self, subtext: str) -> list:
         """
-            Method returns list with records which contains subtext.
+        Method returns list with records which contains subtext.
         """
         result_records = []
         for record in self:
@@ -184,3 +201,18 @@ class AdressBook(UserDict):
                 if subtext in phone_number.value:
                     result_records.append(record)
         return result_records
+
+    def load_data(self) -> None:
+        """
+        Load adress_book/note_book from file
+        """
+        if os.path.exists("data-adress.bin"):
+            with open("data-adress.bin", "rb") as file:
+                self.adress_book = pickle.load(file)
+
+    def save_data(self) -> None:
+        """
+        Save data to file
+        """
+        with open("data-adress.bin", "wb") as file:
+            pickle.dump(self.adress_book, file)
