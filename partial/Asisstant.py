@@ -1,10 +1,14 @@
 import os
 import pickle
 
-from partial.AdressBook import *
+from partial.AdressBook import AddressBook, Record
 
 
 class Asisstant:
+    """
+    Assistant is adapter between CLI interface and AdressBook + NoteBook
+    """
+
     def __init__(self) -> None:
         self.address_book = AddressBook()
         self.address_book.load_data("data.bin")
@@ -143,3 +147,12 @@ class Asisstant:
         self.address_book.delete_record(name)
         print(self.address_book)
         return f"Successfully deleted contact {name} from contact book"
+
+    def add_note(self) -> None:
+        pass
+
+    def del_note(self) -> None:
+        pass
+
+    def show_notes(self) -> None:
+        pass

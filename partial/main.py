@@ -9,7 +9,7 @@ def main():
     if len(sys.argv) == 1:
         print("Hello, from Jarvis.")
 
-    if "record" in commands:
+    if "contact" in commands:
 
         if "add" in commands:
             jarvis.add_contact()
@@ -19,9 +19,25 @@ def main():
         elif "show" in commands:
             jarvis.address_book.show_all_records()
 
+        elif "find" in commands:
+            if len(commands) != 3:
+                print("Incorrect command usage.")
+                return
+            name = commands[-1]
+            record = jarvis.address_book.find_record(name)
+            print(record)
+
+        elif "delete" in commands:
+            if len(commands) != 3:
+                print("Incorrect command usage.")
+                return
+            name = commands[-1]
+
     elif "note" in commands:
         if "add" in commands:
-            pass
+            jarvis.add_note()
+        elif "show" in commands:
+            jarvis.show_notes()
 
 
 if __name__ == "__main__":
