@@ -174,8 +174,8 @@ Email: {self.email.value}
         if birthday_date <= date_now:
             birthday_date = birthday_date.replace(year=date_now.year + 1)
 
-        days_delta = timedelta(birthday_date - date_now).days
-        return days_delta
+        days_delta = birthday_date - date_now
+        return days_delta.days
 
     def __next__(self):
         return self
@@ -211,6 +211,7 @@ class AddressBook(UserDict):
     def show_all_records(self):
         for record in self:
             print(record)
+        return '__________'
 
     def __iter__(self):
         return iter(self.data.values())
@@ -246,7 +247,7 @@ class AddressBook(UserDict):
         except ValueError:
             raise ValueError("Input a number")
         result = []
-        for record in self.data.values:
+        for record in self.data.values():
             if record.birthday and record.birthday.value:
                 if record.days_to_birthday() <= step:
                     birthday = f'{record.name.value} {record.birthday.value.strftime("%d-%m-%Y")}'
