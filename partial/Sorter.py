@@ -76,10 +76,7 @@ class Sorter:
                 
     def sort(self, _dir: str) -> None:
         
-        if platform == "win32":
-            folder_sep = '//'
-        else:
-            folder_sep = '/'
+        folder_sep = "//" if platform == "win32" else "/"
         _dir = Path(_dir)
         main_path = _dir
         if not os.path.exists(main_path):

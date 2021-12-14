@@ -121,10 +121,7 @@ class NoteBook(UserList):
         return notes_list
 
     def save_data(self) -> None:
-        if platform == "win32":
-            folder_sep = "//"
-        else:
-            folder_sep = "/"
+        folder_sep = "//" if platform == "win32" else "/"
         jarvis_folder = os.environ["HOME"] + folder_sep + "jarvis"
 
         if os.path.exists(jarvis_folder):
@@ -136,10 +133,9 @@ class NoteBook(UserList):
                 pickle.dump(self.data, file)
 
     def load_data(self) -> None:
-        if platform == "win32":
-            folder_sep = "//"
-        else:
-            folder_sep = "/"
+
+        folder_sep = "//" if platform == "win32" else "/"
+
         jarvis_notes = (
             os.environ["HOME"] + folder_sep + "jarvis" + folder_sep + "notes.bin"
         )

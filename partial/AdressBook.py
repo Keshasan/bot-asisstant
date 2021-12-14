@@ -203,10 +203,8 @@ class AddressBook(UserDict):
         self.data.pop(value)
 
     def save_data(self) -> None:
-        if platform == "win32":
-            folder_sep = "//"
-        else:
-            folder_sep = "/"
+        folder_sep = "//" if platform == "win32" else "/"
+
         jarvis_folder = os.environ["HOME"] + folder_sep + "jarvis"
 
         if os.path.exists(jarvis_folder):
@@ -218,10 +216,7 @@ class AddressBook(UserDict):
                 pickle.dump(self.data, file)
 
     def load_data(self) -> None:
-        if platform == "win32":
-            folder_sep = "//"
-        else:
-            folder_sep = "/"
+        folder_sep = "//" if platform == "win32" else "/"
         jarvis_contacts = (
             os.environ["HOME"] + folder_sep + "jarvis" + folder_sep + "contacts.bin"
         )
