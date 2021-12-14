@@ -145,9 +145,9 @@ class Asisstant:
         self.address_book.save_data("data.bin")
         return f"Successfully changed address for contact {name}"
     
-    def change_contact(self) -> str:
-        name = input("Write contact name: ").capitalize()
-        while name not in self.address_book.keys():
+    def change_contact(self, name: str) -> str:
+        
+        if name not in self.address_book.keys():
             print(f"I do not have {name} contact in my book")
             name = input("Write contact name: ").capitalize()
         user_commands = {
@@ -164,22 +164,23 @@ class Asisstant:
         print(user_commands[what_change](name))
         return 'Successfully saved new value in data'
     
-    def del_contact(self) -> str:
-        name = input("Write contact name: ").capitalize()
-        while name not in self.address_book.keys():
+    def del_contact(self, name: str) -> str:
+        
+        if name not in self.address_book.keys():
             print(f"I do not have {name} contact in my book")
             name = input("Write contact name: ").capitalize()
-        self.address_book.delete_record(name)
-        print(self.address_book)
-        return f"Successfully deleted contact {name} from contact book"
+        approve = input('Are you sure? [y/n]').lower()
+        if approve in ('y', 'yes', 'ok'):
+            self.address_book.delete_record(name)
+            print(self.address_book)
+            return f"Successfully deleted contact {name} from contact book"
     
-    def find_contact(self) -> str:
-        name = input("Write contact name: ")
+    def find_contact(self, name:str) -> Record:
+        
         result = self.address_book.find_record(name)
         return result
     
-    def get_birthdays(self):
-        days = input('For how many days do you want to know the birthdays?\n')
+    def get_birthdays(self, days: int) -> list:
         while days.isdigit() is False:
             days = input('"Error please enter digits"\nFor how many days do you want to know the birthdays?\n')
         days = int(days)
