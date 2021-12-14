@@ -11,6 +11,7 @@ def main():
         "jarvis find contact {name}\n",
         "jarvis change contact {name}\n",
         "jarvis delete contact {name}\n",
+        "jarvis add phone {name}"
         "jarvis get birthdays {days_to}\n",
         "jarvis add note\n",
         "jarvis show notes\n",
