@@ -132,12 +132,14 @@ class Record:
                 return p
 
     def __str__(self):
-        return f"""\nName: {self.name.value}
-Phones: {[p.value for p in self.phones]}
-Adress: {self.address.value}
-Birthday: {self.birthday.value}
-Email: {self.email.value}
-                   """
+        info = f'\nName : {self.name.value}\n'+f'Phones: {[p.value for p in self.phones]}\n'
+        if self.address.value:
+            info += f'Adress: {self.address.value}\n'
+        if self.birthday.value:
+            info += f'Birthday: {self.birthday.value}\n'
+        if self.email.value:
+            info += f'Email: {self.email.value}\n'
+        return info
 
     def __repr__(self):
         return f"Record of {self.name.value}, phones {[p.value for p in self.phones]}"
@@ -189,7 +191,7 @@ class AddressBook(UserDict):
 
     def find_record(self, value: str) -> str:
         if value in self.data.keys():
-            return f"{self.data[value].name.value}: phones: {self.data[value].get_phones()}, birthday: {self.data[value].birthday.value}, Email: {self.data[value].email.value}, Address: {self.data[value].address.value}"
+            return self.data[value]
         else:
             return f"I do not have such contact: {value}"
 

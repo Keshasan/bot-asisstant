@@ -74,14 +74,17 @@ class Sorter:
             if len_0 or len_1:
                 shutil.rmtree(path)
                 
-    def sort(self):
-        _dir = input('Place path to folder: ')
+    def sort(self, _dir: str) -> None:
+        
         if platform == "win32":
             folder_sep = '//'
         else:
             folder_sep = '/'
         _dir = Path(_dir)
         main_path = _dir
+        if not os.path.exists(main_path):
+            print("No such directory.")
+            return
         folder_list = ['images', 'documents', 'audio', 'video', 'archives']
         files_type = {
             'video': ['avi', 'mp4', 'mov', 'mkv'],
