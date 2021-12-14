@@ -5,15 +5,21 @@ from partial.Sorter import Sorter
 
 def main():
     jarvis = Asisstant()
-    commands_list = (
-        "add contact",
-        "find contact",
-        "change contact",
-        "del contact",
-        "get birthdays",
-        "show all",
-        "sort folder",
-    )
+    commands_list = [
+        "jarvis add contact\n",
+        "jarvis show contacts\n",
+        "jarvis find contact {name}\n",
+        "jarvis change contact {name}\n",
+        "jarvis delete contact {name}\n",
+        "jarvis get birthdays {days_to}\n",
+        "jarvis add note\n",
+        "jarvis show notes\n",
+        "jarvis find note {id/text/tag}\n",
+        "jarvis change note {id}\n",
+        "jarvis delete note {id}\n",
+        "jarvis add tags {id}\n",
+        "jarvis sort folder {path_to_folder}\n",
+    ]
     user_commands = {
         "add contact": jarvis.add_contact,
         "show contacts": jarvis.address_book.show_all_records,
@@ -36,7 +42,7 @@ def main():
     str_cmd = " ".join(commands)
     if len(sys.argv) == 1:
         print(
-            f'Hello my name is "Jarvis" i am your virtual assistant.\nI support these commands: {commands_list}'
+            f'Hello my name is "Jarvis" i am your virtual assistant.\nI support these commands:\n  {"  ".join(commands_list)}'
         )
     elif len(commands) == 2:
         if str_cmd in user_commands.keys():
