@@ -61,3 +61,45 @@ Organize your folder tree
 jarvis get birthdays 7
 ```
 Check your friends birthdays in upcoming 7 days
+----
+## Full list of commands
+
+```sh
+jarvis add contact
+```
+```sh
+jarvis show contacts
+```
+```sh
+jarvis find contact {name}
+```
+```sh
+jarvis change contact {name}
+```
+```sh
+jarvis delete contact {name}
+```
+```sh
+jarvis get birthdays {days_to}
+```
+```sh
+jarvis add note
+```
+```sh
+jarvis show notes
+```
+```sh
+jarvis find note {id/text/tag}
+```
+```sh
+jarvis change note {id}
+```
+```sh
+jarvis delete note {id}
+```
+```sh
+jarvis add tags {id}
+```
+```sh
+jarvis sort folder {path_to_folder}
+```
