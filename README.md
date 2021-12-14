@@ -21,13 +21,9 @@ Jarvis is your own asisstant with personal notes, contacts and features.
 - Done! You can use any available command!
 
 # Usage Example
-# 
-----
-# 
+
 
 Type `jarvis` to see full list of commands
-# 
-----
 # 
 ```sh
 jarvis add contact
@@ -37,8 +33,7 @@ Type name, adress, phones, email of your contact(some fields are optional)
 jarvis show contacts
 ```
 See all records in your contact book
-# 
-----
+
 # 
 ```sh
 jarvis add note
@@ -53,8 +48,7 @@ See all your notes
 jarvis find note todo
 ```
 Get all your note with todo tag
-# 
----
+
 ## Features
 
 _Jarvis can sort your folder tree and check your friends birthdays in next N days_
