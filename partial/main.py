@@ -16,8 +16,9 @@ def main():
     )
     user_commands = {
         "add contact": jarvis.add_contact,
-        "show all": jarvis.address_book.show_all_records,
-       
+        "show contacts": jarvis.address_book.show_all_records,
+        "add note": jarvis.add_note,
+        "show notes": jarvis.show_notes
         }
     user_commands_with_arguments = {
         "find contact": jarvis.find_contact,

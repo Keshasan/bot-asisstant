@@ -1,5 +1,7 @@
+from os import terminal_size
+from re import T
 from partial.AdressBook import *
-
+from partial.NoteBook import *
 
 class Asisstant:
     def __init__(self) -> None:
@@ -186,3 +188,24 @@ class Asisstant:
         days = int(days)
         birthday_list = self.address_book.birthday_in_days(days)
         return birthday_list
+
+    def add_note(self) -> None:
+        print('Write down your note:')
+        text = ''
+        while True:
+            row = input()
+            if row:
+                text += row +'\n'
+            else:
+                break    
+        if text == '':
+            return
+        print(text)
+    def find_note_by_id(self, id:str) -> None:
+        pass
+
+    def show_notes(self) -> str:
+        pass
+
+    def add_tags(self) -> str:
+        pass
