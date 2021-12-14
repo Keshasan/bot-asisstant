@@ -11,6 +11,7 @@ def main():
         "jarvis find contact {name}\n",
         "jarvis change contact {name}\n",
         "jarvis delete contact {name}\n",
+        "jarvis add phone {name}"
         "jarvis get birthdays {days_to}\n",
         "jarvis add note\n",
         "jarvis show notes\n",
@@ -28,6 +29,7 @@ def main():
     }
     user_commands_with_arguments = {
         "find contact": jarvis.find_contact,
+        "add phone": jarvis.add_phone,
         "change contact": jarvis.change_contact,
         "delete contact": jarvis.del_contact,
         "get birthdays": jarvis.get_birthdays,

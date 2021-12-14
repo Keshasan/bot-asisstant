@@ -179,8 +179,8 @@ class Asisstant:
         approve = input("Are you sure? [y/n]").lower()
         if approve in ("y", "yes", "ok"):
             self.address_book.delete_record(name)
-            print(self.address_book)
-            print(f"Successfully deleted contact {name} from contact book")
+            
+            print(f"[-] Successfully deleted contact {name} from contact book")
 
     def find_contact(self, name: str) -> None:
 
@@ -253,3 +253,12 @@ class Asisstant:
         tags = [tag.strip() for tag in tags]
         self.note_book.add_note_tags(id, tags)
         self.note_book.save_data()
+
+    def add_phone(self, name:str) -> None:
+        name = name.capitalize()
+        if name not in self.address_book.keys():
+            print(f"I do not have {name} contact in my book")
+            name = input("Write contact name: ").capitalize()
+        phone = input('Phone: ')
+        self.address_book[name].add_phone(phone)
+        self.address_book.save_data()

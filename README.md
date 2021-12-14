@@ -78,6 +78,10 @@ jarvis find contact {name}
 ```
 -Find contact by name
 ```sh
+jarvis add phone {name}
+```
+-Add phone to contact's phone list
+```sh
 jarvis change contact {name}
 ```
 -Change any field in your contact
