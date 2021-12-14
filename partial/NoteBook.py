@@ -8,13 +8,13 @@ class Tag:
     def __init__(self, value: str) -> None:
         self.value = value
 
-    @property
-    def value(self):
-        return self.__value
+    # @property
+    # def value(self):
+    #     return self.__value
 
-    @value.setter
-    def value(self, value: str) -> None:
-        self.__value = value
+    # @value.setter
+    # def value(self, value: str) -> None:
+    #     self.__value = value
 
 
 class Note():
@@ -25,9 +25,9 @@ class Note():
 
     def __str__(self) -> str:
         tags = []
-        print(type(self.tags))
+        
         for tag in self.tags:
-            print((tag.value))
+            
             tags.append(tag.value)
         
         note_tags =', '.join(tags)
@@ -44,7 +44,7 @@ class NoteBook(UserList):
     def set_ID(self):
         return len(self.data) + 1
 
-    def add_note(self, text:str, *tags:str) -> None:
+    def add_note(self, text:str, tags:list) -> None:
         '''Method for adding note to list'''
         id = self.set_ID()
         new_note = Note(text, tags, id)
@@ -103,11 +103,10 @@ class NoteBook(UserList):
         notes_list = []
         for note in self.data:
             note_tags = [tag.value for tag in note.tags]
-            print(note_tags)
+            
             if subtext in note_tags:
                 notes_list.append(note)
-        for note in notes_list:
-            print(note)
+        return notes_list
     
     def save_data(self, filename: str) -> None:
         with open(filename, "wb") as file:
