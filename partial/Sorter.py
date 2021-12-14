@@ -94,4 +94,4 @@ class Sorter:
         Sorter().rename_files_and_folders(str(_dir), folder_sep)
         Sorter().find_files_and_sort(str(_dir), main_path, folder_list, folder_sep, files_type)
         Sorter().remove_empty_folders(_dir, folder_list, folder_sep)
-        return 'Sorted'
+        print('Sorted')
