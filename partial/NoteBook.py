@@ -33,7 +33,7 @@ class Note():
         note_tags =', '.join(tags)
         text = f'ID:{self.id}\nNote: \n{self.text}'
         
-        if note_tags != "['']":
+        if len(tags) != 0:
             text += f'Tags: {note_tags}\n'
         return text
 
