@@ -61,6 +61,7 @@ Organize your folder tree
 jarvis get birthdays 7
 ```
 Check your friends birthdays in upcoming 7 days
+
 ----
 ## Full list of commands
 
