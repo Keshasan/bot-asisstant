@@ -7,9 +7,9 @@ from partial.NoteBook import *
 class Asisstant:
     def __init__(self) -> None:
         self.address_book = AddressBook()
-        self.address_book.load_data("data.bin")
+        self.address_book.load_data()
         self.note_book = NoteBook()
-        self.note_book.load_data("notes.bin")
+        self.note_book.load_data()
 
     def __get_phone(self, name: str) -> str:
         phone = input("Phone is key value, please write phones: ")
@@ -22,7 +22,7 @@ class Asisstant:
             if self.address_book[name].get_phones() != phones_list:
                 self.address_book[name].phones.clear()
                 phone = input("Phone is key value, please write phones: ")
-        self.address_book.save_data("data.bin")
+        self.address_book.save_data()
         return f"Successfully set phone {phone}"
 
     def __get_birthday(self, name: str) -> str:
@@ -38,7 +38,7 @@ class Asisstant:
                     birthday = input(
                         '"OPTIONAL" You can skip this info, just press enter\nWrite birthday: '
                     )
-        self.address_book.save_data("data.bin")
+        self.address_book.save_data()
         return f"Successfully set birthday {birthday}"
 
     def __get_email(self, name: str) -> str:
@@ -54,7 +54,7 @@ class Asisstant:
                     email = input(
                         '"OPTIONAL" You can skip this info, just press enter\nWrite email: '
                     )
-        self.address_book.save_data("data.bin")
+        self.address_book.save_data()
         return f"Successfully set email {email}"
 
     def __get_address(self, name: str) -> str:
@@ -70,7 +70,7 @@ class Asisstant:
                     address = input(
                         '"OPTIONAL" You can skip this info, just press enter\nWrite address: '
                     )
-        self.address_book.save_data("data.bin")
+        self.address_book.save_data()
         return f"Successfully set address {address}"
 
     def add_contact(self) -> str:
@@ -83,7 +83,7 @@ class Asisstant:
             name=name, phones=[], birthday=None, email=None, address=None
         )
         self.address_book.add_record(new_contact)
-        self.address_book.save_data("data.bin")
+        self.address_book.save_data()
         Asisstant().__get_phone(name)
         Asisstant().__get_birthday(name)
         Asisstant().__get_email(name)
@@ -106,7 +106,7 @@ class Asisstant:
         )
         self.address_book.add_record(new_record)
         self.address_book.delete_record(name)
-        self.address_book.save_data("data.bin")
+        self.address_book.save_data()
         return f"Successfully changed name for contact {name}"
 
     def __change_phone(self, name: str) -> str:
@@ -122,7 +122,7 @@ class Asisstant:
             new_phone = input("Write new phone: ")
             self.address_book[name].add_phone(new_phone)
             self.address_book[name].delete_phone([])
-        self.address_book.save_data("data.bin")
+        self.address_book.save_data()
         return f"Successfully changed phone for contact {name}"
 
     def __change_birthday(self, name: str) -> str:
@@ -131,7 +131,7 @@ class Asisstant:
             self.address_book[name].add_birthday(new_birthday)
             if str(self.address_book[name].birthday.value) != new_birthday:
                 new_birthday = input("Write new birthday: ")
-        self.address_book.save_data("data.bin")
+        self.address_book.save_data()
         return f"Successfully changed birthday for contact {name}"
 
     def __change_email(self, name: str) -> str:
@@ -140,7 +140,7 @@ class Asisstant:
             self.address_book[name].add_email(new_email)
             if str(self.address_book[name].email.value) != new_email:
                 new_email = input("Write new email: ")
-        self.address_book.save_data("data.bin")
+        self.address_book.save_data()
         return f"Successfully changed email for contact {name}"
 
     def __change_address(self, name: str) -> str:
@@ -149,7 +149,7 @@ class Asisstant:
             self.address_book[name].add_address(new_address)
             if str(self.address_book[name].address.value) != new_address:
                 new_address = input("Write new address: ").capitalize()
-        self.address_book.save_data("data.bin")
+        self.address_book.save_data()
         return f"Successfully changed address for contact {name}"
 
     def change_contact(self, name: str) -> None:
@@ -218,10 +218,10 @@ class Asisstant:
             tags = text_tags.split(",")
             tags = [tag.strip() for tag in tags]
             self.note_book.add_note(text, tags)
-            self.note_book.save_data("notes.bin")
+            self.note_book.save_data()
         else:
             self.note_book.add_note(text, [])
-            self.note_book.save_data("notes.bin")
+            self.note_book.save_data()
 
     def find_note(self, value: str) -> None:
         notes = self.note_book.find_note(value)
@@ -241,15 +241,15 @@ class Asisstant:
         print("Write down your new note: ")
         text = self.__get_text_note()
         self.note_book.change_note(id, text)
-        self.note_book.save_data("notes.bin")
+        self.note_book.save_data()
 
     def delete_note(self, id: str) -> None:
         self.note_book.del_note(id)
-        self.note_book.save_data("notes.bin")
+        self.note_book.save_data()
 
     def add_tags(self, id: str) -> str:
         text_tags = input("Write tags to this note: ")
         tags = text_tags.split(",")
         tags = [tag.strip() for tag in tags]
         self.note_book.add_note_tags(id, tags)
-        self.note_book.save_data("notes.bin")
+        self.note_book.save_data()

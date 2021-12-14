@@ -1,6 +1,7 @@
 import os
 import pickle
 from collections import UserDict, UserList
+from sys import platform
 from typing import Generator, Optional
 
 
@@ -35,7 +36,7 @@ class Note:
 
         note_tags = ", ".join(tags)
         text = f"ID:{self.id}\nNote: \n{self.text}"
-        print(len(tags))
+
         if len(tags) != 0:
             text += f"Tags: {note_tags}\n"
         return text
@@ -119,11 +120,30 @@ class NoteBook(UserList):
                 notes_list.append(note)
         return notes_list
 
-    def save_data(self, filename: str) -> None:
-        with open(filename, "wb") as file:
-            pickle.dump(self.data, file)
+    def save_data(self) -> None:
+        if platform == "win32":
+            folder_sep = "//"
+        else:
+            folder_sep = "/"
+        jarvis_folder = os.environ["HOME"] + folder_sep + "jarvis"
 
-    def load_data(self, filename: str) -> None:
-        if os.path.exists(filename):
-            with open(filename, "rb") as file:
+        if os.path.exists(jarvis_folder):
+            with open(jarvis_folder + folder_sep + "notes.bin", "wb") as file:
+                pickle.dump(self.data, file)
+        else:
+            os.mkdir(jarvis_folder)
+            with open(jarvis_folder + folder_sep + "notes.bin", "wb") as file:
+                pickle.dump(self.data, file)
+
+    def load_data(self) -> None:
+        if platform == "win32":
+            folder_sep = "//"
+        else:
+            folder_sep = "/"
+        jarvis_notes = (
+            os.environ["HOME"] + folder_sep + "jarvis" + folder_sep + "notes.bin"
+        )
+
+        if os.path.exists(jarvis_notes):
+            with open(jarvis_notes, "rb") as file:
                 self.data = pickle.load(file)

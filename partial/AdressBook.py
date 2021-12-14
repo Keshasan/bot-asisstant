@@ -1,5 +1,6 @@
 import os
 import pickle
+from sys import platform
 from collections import UserDict
 from typing import Optional, List
 from datetime import date, timedelta
@@ -132,13 +133,16 @@ class Record:
                 return p
 
     def __str__(self):
-        info = f'\nName : {self.name.value}\n'+f'Phones: {[p.value for p in self.phones]}\n'
+        info = (
+            f"\nName : {self.name.value}\n"
+            + f"Phones: {[p.value for p in self.phones]}\n"
+        )
         if self.address.value:
-            info += f'Adress: {self.address.value}\n'
+            info += f"Adress: {self.address.value}\n"
         if self.birthday.value:
-            info += f'Birthday: {self.birthday.value}\n'
+            info += f"Birthday: {self.birthday.value}\n"
         if self.email.value:
-            info += f'Email: {self.email.value}\n'
+            info += f"Email: {self.email.value}\n"
         return info
 
     def __repr__(self):
@@ -198,13 +202,32 @@ class AddressBook(UserDict):
     def delete_record(self, value: str) -> None:
         self.data.pop(value)
 
-    def save_data(self, name_file):
-        with open(name_file, "wb") as file:
-            pickle.dump(self.data, file)
+    def save_data(self) -> None:
+        if platform == "win32":
+            folder_sep = "//"
+        else:
+            folder_sep = "/"
+        jarvis_folder = os.environ["HOME"] + folder_sep + "jarvis"
 
-    def load_data(self, name_file):
-        if os.path.exists(name_file):
-            with open(name_file, "rb") as file:
+        if os.path.exists(jarvis_folder):
+            with open(jarvis_folder + folder_sep + "contacts.bin", "wb") as file:
+                pickle.dump(self.data, file)
+        else:
+            os.mkdir(jarvis_folder)
+            with open(jarvis_folder + folder_sep + "contacts.bin", "wb") as file:
+                pickle.dump(self.data, file)
+
+    def load_data(self) -> None:
+        if platform == "win32":
+            folder_sep = "//"
+        else:
+            folder_sep = "/"
+        jarvis_contacts = (
+            os.environ["HOME"] + folder_sep + "jarvis" + folder_sep + "contacts.bin"
+        )
+
+        if os.path.exists(jarvis_contacts):
+            with open(jarvis_contacts, "rb") as file:
                 self.data = pickle.load(file)
 
     def __str__(self):
@@ -213,7 +236,7 @@ class AddressBook(UserDict):
     def show_all_records(self):
         for record in self:
             print(record)
-        return '__________'
+        return "__________"
 
     def __iter__(self):
         return iter(self.data.values())
