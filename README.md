@@ -34,8 +34,7 @@ jarvis show contacts
 ```
 See all records in your contact book
 
-----
-
+# 
 ```sh
 jarvis add note
 ```
