@@ -203,7 +203,7 @@ class AddressBook(UserDict):
             pickle.dump(self.data, file)
 
     def load_data(self, name_file):
-        if os.path.isfile(name_file) and os.path.getsize(name_file) > 0:
+        if os.path.exists(name_file):
             with open(name_file, "rb") as file:
                 self.data = pickle.load(file)
 

@@ -1,5 +1,5 @@
 from os import terminal_size
-from re import T
+from re import S, T
 from partial.AdressBook import *
 from partial.NoteBook import *
 
@@ -7,6 +7,8 @@ class Asisstant:
     def __init__(self) -> None:
         self.address_book = AddressBook()
         self.address_book.load_data("data.bin")
+        self.note_book = NoteBook()
+        self.note_book.load_data("notes.bin")
     
     def __get_phone(self, name: str) -> str:
         phone = input("Phone is key value, please write phones: ")
@@ -85,7 +87,7 @@ class Asisstant:
         Asisstant().__get_birthday(name)
         Asisstant().__get_email(name)
         Asisstant().__get_address(name)
-        return f"Successfully added contact {name} to contact book"
+        print(f"Successfully added contact {name} to contact book")
     
     def __change_name(self, name: str) -> str:
         new_name = input("Write new name: ").capitalize()
@@ -147,7 +149,7 @@ class Asisstant:
         self.address_book.save_data("data.bin")
         return f"Successfully changed address for contact {name}"
     
-    def change_contact(self, name: str) -> str:
+    def change_contact(self, name: str) -> None:
         
         if name not in self.address_book.keys():
             print(f"I do not have {name} contact in my book")
@@ -164,9 +166,9 @@ class Asisstant:
             print('I can change only phone, name, birthday, email, address')
             what_change = input('What you want to change?\n')
         print(user_commands[what_change](name))
-        return 'Successfully saved new value in data'
+        print('Successfully saved new value in data')
     
-    def del_contact(self, name: str) -> str:
+    def del_contact(self, name: str) -> None:
         
         if name not in self.address_book.keys():
             print(f"I do not have {name} contact in my book")
@@ -175,19 +177,20 @@ class Asisstant:
         if approve in ('y', 'yes', 'ok'):
             self.address_book.delete_record(name)
             print(self.address_book)
-            return f"Successfully deleted contact {name} from contact book"
+            print(f"Successfully deleted contact {name} from contact book")
     
-    def find_contact(self, name:str) -> Record:
+    def find_contact(self, name:str) -> None:
         
         result = self.address_book.find_record(name)
-        return result
+        print(result)
     
     def get_birthdays(self, days: int) -> list:
         while days.isdigit() is False:
             days = input('"Error please enter digits"\nFor how many days do you want to know the birthdays?\n')
         days = int(days)
         birthday_list = self.address_book.birthday_in_days(days)
-        return birthday_list
+        for info in birthday_list:
+            print(info)
 
     def add_note(self) -> None:
         print('Write down your note:')
@@ -200,12 +203,24 @@ class Asisstant:
                 break    
         if text == '':
             return
-        print(text)
-    def find_note_by_id(self, id:str) -> None:
-        pass
+        text_tags = input('OPTIONAL, write tags to this note: ')
+        tags = text_tags.split(',')
+        tags = [tag.strip() for tag in tags]
+        self.note_book.add_note(text, tags)
+        self.note_book.save_data('notes.bin')
 
-    def show_notes(self) -> str:
-        pass
+    def find_note(self, value:str) -> None:
+        notes = self.note_book.find_note(value)
+        for note in notes:
+            print(note)
+
+    def show_notes(self) -> None:
+        if len(self.note_book.data) == 0:
+            print("You don't have notes yet.")
+            return
+        for note in self.note_book.data:
+            print(note)
+
 
     def add_tags(self) -> str:
         pass
