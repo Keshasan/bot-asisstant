@@ -1,3 +1,5 @@
+import os
+import pickle
 from collections import UserDict, UserList
 from typing import Generator, Optional
 
@@ -6,27 +8,34 @@ class Tag:
     def __init__(self, value: str) -> None:
         self.value = value
 
-    @property
-    def value(self):
-        return self.__value
+    # @property
+    # def value(self):
+    #     return self.__value
 
-    @value.setter
-    def value(self, value: str) -> None:
-        self.__value = value
+    # @value.setter
+    # def value(self, value: str) -> None:
+    #     self.__value = value
 
 
 class Note():
-    def __init__(self, text: str, id:int, tags: list[str]) -> None:
+    def __init__(self, text: str, tags: list[str], id:int) -> None:
         self.text = text
         self.id = id
         self.tags = [Tag(tag) for tag in tags]
-    
+
     def __str__(self) -> str:
         tags = []
+        
         for tag in self.tags:
-            tags.append(str(tag.value))
+            
+            tags.append(tag.value)
+        
         note_tags =', '.join(tags)
-        return f'ID:{self.id} Note: {self.text}\nTags: {note_tags}'
+        text = f'ID:{self.id}\nNote: \n{self.text}'
+        
+        if len(tags) != 0:
+            text += f'Tags: {note_tags}\n'
+        return text
 
 class NoteBook(UserList):
     """
@@ -35,21 +44,23 @@ class NoteBook(UserList):
     def set_ID(self):
         return len(self.data) + 1
 
-    def add_note(self, text:str, *tags:str) -> None:
+    def add_note(self, text:str, tags:list) -> None:
         '''Method for adding note to list'''
         id = self.set_ID()
-        new_note = Note(text, id, tags)
+        new_note = Note(text, tags, id)
         self.data.append(new_note)
         print('New note was added')
 
-    def find_note(self, subtext:str) -> None:
+    def find_note(self, subtext:str) -> list:
         '''Method to find notes by text or ID'''
+        
         notes_list = []
         for note in self.data:
+            
             if subtext in note.text  or subtext == str(note.id):
                 notes_list.append(note)
-        for note in notes_list:
-            print(str(note))
+        notes_list += self.find_by_tag(subtext)
+        return notes_list
 
     def del_note(self, id: int) -> None:
         """Method to delete note by ID"""
@@ -86,12 +97,22 @@ class NoteBook(UserList):
                 note.tags.extend([Tag(tag) for tag in tags])
                 print('Tags was added')
 
-    def find_by_tag(self, tag:str) -> None:
+    def find_by_tag(self, subtext:str) -> None:
         '''Method to find notes by tag'''
+        
         notes_list = []
         for note in self.data:
             note_tags = [tag.value for tag in note.tags]
-            if tag in note_tags:
+            
+            if subtext in note_tags:
                 notes_list.append(note)
-        for note in notes_list:
-            print(str(note))
+        return notes_list
+    
+    def save_data(self, filename: str) -> None:
+        with open(filename, "wb") as file:
+            pickle.dump(self.data, file)
+
+    def load_data(self, filename: str) -> None:
+        if os.path.exists(filename):
+            with open(filename, "rb") as file:
+                self.data = pickle.load(file)
