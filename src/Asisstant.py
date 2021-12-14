@@ -1,7 +1,7 @@
 from os import terminal_size
 from re import S, T
-from partial.AdressBook import *
-from partial.NoteBook import *
+from src.AdressBook import *
+from src.NoteBook import *
 
 
 class Asisstant:
@@ -187,7 +187,7 @@ class Asisstant:
         result = self.address_book.find_record(name)
         print(result)
 
-    def get_birthdays(self, days: int) -> list:
+    def get_birthdays(self, days: int) -> None:
         while days.isdigit() is False:
             days = input(
                 '"Error please enter digits"\nFor how many days do you want to know the birthdays?\n'
@@ -197,8 +197,8 @@ class Asisstant:
         for info in birthday_list:
             print(info)
 
-    def __get_text_note(self) -> str:
-        text = ""
+    def __get_text_note(self) -> Optional[str]:
+        text = ''
         while True:
             row = input()
             if row:
