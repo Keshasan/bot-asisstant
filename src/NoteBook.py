@@ -1,8 +1,8 @@
 import os
 import pickle
-from collections import UserDict, UserList
+from collections import UserList
 from sys import platform
-from typing import Generator, Optional
+
 
 
 class Tag:
