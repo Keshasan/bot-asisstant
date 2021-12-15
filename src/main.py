@@ -1,6 +1,6 @@
 import sys
-from partial.Asisstant import Asisstant
-from partial.Sorter import Sorter
+from src.Asisstant import Asisstant
+from src.Sorter import Sorter
 
 
 def main():
@@ -48,7 +48,7 @@ def main():
         )
     elif len(commands) == 2:
         if str_cmd in user_commands.keys():
-            user_commands.get(str_cmd)()
+            user_commands[str_cmd]()
         else:
             print(f"I do not support this command {str_cmd}")
     elif len(commands) == 3:
@@ -57,7 +57,7 @@ def main():
         user_argument = commands[-1]
 
         if str_cmd in user_commands_with_arguments.keys():
-            user_commands_with_arguments.get(str_cmd)(user_argument)
+            user_commands_with_arguments[str_cmd](user_argument)
         else:
             print(f"I do not support this command {str_cmd}")
     else:

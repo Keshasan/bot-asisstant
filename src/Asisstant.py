@@ -1,7 +1,7 @@
 from os import terminal_size
-from re import S, T
-from partial.AdressBook import *
-from partial.NoteBook import *
+
+from src.AdressBook import *
+from src.NoteBook import *
 
 
 class Asisstant:
@@ -11,83 +11,18 @@ class Asisstant:
         self.note_book = NoteBook()
         self.note_book.load_data()
 
-    def __get_phone(self, name: str) -> str:
-        phone = input("Phone is key value, please write phones: ")
-        phones_list = phone.split(",") if phone is not None else []
-        while self.address_book[name].get_phones() != phones_list:
-            phones_list = phone.split(",") if phone is not None else []
-            for item in phones_list:
-                self.address_book[name].add_phone(item)
-            self.address_book[name].delete_phone([])
-            if self.address_book[name].get_phones() != phones_list:
-                self.address_book[name].phones.clear()
-                phone = input("Phone is key value, please write phones: ")
-        self.address_book.save_data()
-        return f"Successfully set phone {phone}"
-
-    def __get_birthday(self, name: str) -> str:
-        birthday = input(
-            '"OPTIONAL" You can skip this info, just press enter\nWrite birthday: '
-        )
-        if len(birthday) == 0:
-            self.address_book[name].birthday.value = None
-        else:
-            while str(self.address_book[name].birthday.value) != birthday:
-                self.address_book[name].add_birthday(birthday)
-                if str(self.address_book[name].birthday.value) != birthday:
-                    birthday = input(
-                        '"OPTIONAL" You can skip this info, just press enter\nWrite birthday: '
-                    )
-        self.address_book.save_data()
-        return f"Successfully set birthday {birthday}"
-
-    def __get_email(self, name: str) -> str:
-        email = input(
-            '"OPTIONAL" You can skip this info, just press enter\nWrite email: '
-        )
-        if len(email) == 0:
-            self.address_book[name].email.value = None
-        else:
-            while str(self.address_book[name].email.value) != email:
-                self.address_book[name].add_email(email)
-                if str(self.address_book[name].email.value) != email:
-                    email = input(
-                        '"OPTIONAL" You can skip this info, just press enter\nWrite email: '
-                    )
-        self.address_book.save_data()
-        return f"Successfully set email {email}"
-
-    def __get_address(self, name: str) -> str:
-        address = input(
-            '"OPTIONAL" You can skip this info, just press enter\nWrite address: '
-        ).capitalize()
-        if len(address) == 0:
-            self.address_book[name].address.value = None
-        else:
-            while str(self.address_book[name].address.value) != address:
-                self.address_book[name].add_address(address)
-                if str(self.address_book[name].address.value) != address:
-                    address = input(
-                        '"OPTIONAL" You can skip this info, just press enter\nWrite address: '
-                    )
-        self.address_book.save_data()
-        return f"Successfully set address {address}"
-
     def add_contact(self) -> str:
         name = input("Name is key value, please write name: ").capitalize()
-        while len(name) < 4:
-            name = input(
-                '"Error" name length must be at least 4, please write name: '
-            ).capitalize()
-        new_contact = Record(
-            name=name, phones=[], birthday=None, email=None, address=None
-        )
+        phone = input('Write phone: ')
+        email = input("OPTIONAL, write email: ")
+        adress = input("OPTIONAL, write adress: ")
+        birthday = input("OPTIONAL, write birthday date: ")
+        phones = phone.replace(' ','').split(',')
+        
+        new_contact = Record(name=name, phones=phones, email=email, address=adress, birthday=birthday)
         self.address_book.add_record(new_contact)
         self.address_book.save_data()
-        Asisstant().__get_phone(name)
-        Asisstant().__get_birthday(name)
-        Asisstant().__get_email(name)
-        Asisstant().__get_address(name)
+        
         print(f"[+] Successfully added contact {name} to contact book")
 
     def __change_name(self, name: str) -> str:
@@ -187,7 +122,7 @@ class Asisstant:
         result = self.address_book.find_record(name)
         print(result)
 
-    def get_birthdays(self, days: int) -> list:
+    def get_birthdays(self, days: int) -> None:
         while days.isdigit() is False:
             days = input(
                 '"Error please enter digits"\nFor how many days do you want to know the birthdays?\n'
@@ -197,8 +132,8 @@ class Asisstant:
         for info in birthday_list:
             print(info)
 
-    def __get_text_note(self) -> str:
-        text = ""
+    def __get_text_note(self) -> Optional[str]:
+        text = ''
         while True:
             row = input()
             if row:

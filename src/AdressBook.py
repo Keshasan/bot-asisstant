@@ -34,13 +34,15 @@ class Phone(Field):
     """Phone of the contact"""
 
     def __init__(self, value):
+        
         if len(value) == 13 and value[0] == "+" and value[1:].isdigit():
+            
             super().__init__(value)
         else:
             print(
                 f"Invalid format for phone: {value}, please enter all phones in format +380123456789"
             )
-            self.value = []
+            self.value = ''
 
     def __eq__(self, other: object) -> bool:
         return self.value == other.value
