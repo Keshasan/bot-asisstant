@@ -4,7 +4,6 @@ from collections import UserList
 from sys import platform
 
 
-
 class Tag:
     def __init__(self, value: str) -> None:
         self.value = value
@@ -122,7 +121,8 @@ class NoteBook(UserList):
 
     def save_data(self) -> None:
         folder_sep = "//" if platform == "win32" else "/"
-        jarvis_folder = os.environ["HOME"] + folder_sep + "jarvis"
+        jarvis_folder = os.environ.get("HOME", os.environ.get(
+            'USERPROFILE')) + folder_sep + "jarvis"
 
         if os.path.exists(jarvis_folder):
             with open(jarvis_folder + folder_sep + "notes.bin", "wb") as file:
@@ -137,7 +137,8 @@ class NoteBook(UserList):
         folder_sep = "//" if platform == "win32" else "/"
 
         jarvis_notes = (
-            os.environ["HOME"] + folder_sep + "jarvis" + folder_sep + "notes.bin"
+            os.environ.get("HOME", os.environ.get('USERPROFILE')) +
+            folder_sep + "jarvis" + folder_sep + "notes.bin"
         )
 
         if os.path.exists(jarvis_notes):
