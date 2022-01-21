@@ -34,9 +34,9 @@ class Phone(Field):
     """Phone of the contact"""
 
     def __init__(self, value):
-        
+
         if len(value) == 13 and value[0] == "+" and value[1:].isdigit():
-            
+
             super().__init__(value)
         else:
             print(
@@ -207,7 +207,8 @@ class AddressBook(UserDict):
     def save_data(self) -> None:
         folder_sep = "//" if platform == "win32" else "/"
 
-        jarvis_folder = os.environ["HOME"] + folder_sep + "jarvis"
+        jarvis_folder = os.environ.get("HOME", os.environ.get(
+            'USERPROFILE')) + folder_sep + "jarvis"
 
         if os.path.exists(jarvis_folder):
             with open(jarvis_folder + folder_sep + "contacts.bin", "wb") as file:
@@ -220,7 +221,8 @@ class AddressBook(UserDict):
     def load_data(self) -> None:
         folder_sep = "//" if platform == "win32" else "/"
         jarvis_contacts = (
-            os.environ["HOME"] + folder_sep + "jarvis" + folder_sep + "contacts.bin"
+            os.environ.get("HOME", os.environ.get('USERPROFILE')) +
+            folder_sep + "jarvis" + folder_sep + "contacts.bin"
         )
 
         if os.path.exists(jarvis_contacts):
@@ -247,7 +249,7 @@ class AddressBook(UserDict):
         """
         records = [record for record in self]
         for i in range(0, len(records), number_records):
-            yield records[i : i + number_records]
+            yield records[i: i + number_records]
 
     def search_subtext(self, subtext: str) -> list:
         """
